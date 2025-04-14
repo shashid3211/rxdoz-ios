@@ -1,18 +1,18 @@
 // notificationService.js
 
 import notifee, {
+  AndroidCategory,
   AndroidImportance,
   AndroidStyle,
-  TriggerType,
   EventType,
-  AndroidCategory,
+  TriggerType,
 } from '@notifee/react-native';
+import { Platform } from 'react-native';
 import {
+  getUpcomingMedicines,
   getUserDetail,
   updateMedicineStatus,
-  getUpcomingMedicines,
 } from './DatabaseService';
-import {Platform} from 'react-native';
 
 /**
  * Schedules a notification for a specific medicine reminder
@@ -45,7 +45,7 @@ const scheduleNotification = async (
     const trigger = {
       type: TriggerType.TIMESTAMP,
       timestamp: notificationTime.valueOf(),
-      alarmManager: {allowWhileIdle: true},
+      alarmManager: Platform.OS === 'android' ? {allowWhileIdle: true} : undefined,
     };
 
     const message = t('notificationMessage', {
@@ -83,6 +83,35 @@ const scheduleNotification = async (
             },
           ],
         },
+        ios: {
+          categoryId: 'medication',
+          sound: 'default',
+          attachments: [{url: 'logo', thumbnailHidden: true}],
+          foregroundPresentationOptions: {
+            alert: true,
+            badge: true,
+            sound: true,
+          },
+          critical: true,
+          criticalVolume: 1.0,
+          threadId: 'medication-reminders',
+          actions: [
+            {
+              id: 'take',
+              title: 'Take',
+              options: {
+                foreground: true,
+              },
+            },
+            {
+              id: 'skip',
+              title: 'Skip',
+              options: {
+                foreground: true,
+              },
+            },
+          ],
+        },
       },
       trigger,
     );
@@ -96,6 +125,11 @@ const scheduleNotification = async (
 };
 
 const createNotificationChannel = async () => {
+  // Skip channel creation on iOS as it's not needed
+  if (Platform.OS === 'ios') {
+    return 'default';
+  }
+
   const channelId = 'alarm';
   const channels = await notifee.getChannels();
   const channelExists = channels.some(channel => channel.id === channelId);
@@ -117,6 +151,16 @@ const createNotificationChannel = async () => {
 
 const refreshNotifications = async t => {
   try {
+    // Request permissions for iOS
+    if (Platform.OS === 'ios') {
+      await notifee.requestPermission({
+        alert: true,
+        badge: true,
+        sound: true,
+        critical: true,
+      });
+    }
+
     // Step 1: Cancel all scheduled notifications
     await notifee.cancelAllNotifications();
     console.log('All notifications cleared.');
@@ -207,8 +251,5 @@ export const getMedicineAndScheduleId = identifier => {
 };
 
 export {
-  refreshNotifications,
-  cleanupOldNotifications,
-  scheduleNotification,
-  handleNotificationPress,
+  cleanupOldNotifications, handleNotificationPress, refreshNotifications, scheduleNotification
 };
