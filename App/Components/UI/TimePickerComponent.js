@@ -1,9 +1,9 @@
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import {TextInput} from 'react-native-paper';
 import React from 'react';
-import {theme} from '../../Constants/theme';
+import { useTranslation } from 'react-i18next';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import {useTranslation} from 'react-i18next';
+import { TextInput } from 'react-native-paper';
+import { theme } from '../../Constants/theme';
 // import * as RNLocalize from 'react-native-localize';
 // import moment from 'moment';
 // import 'moment/locale/hi';
@@ -25,6 +25,7 @@ const TimePickerComponent = ({
   const {t} = useTranslation();
   return (
     <View
+      pointerEvents="none"
       style={{
         flexDirection: 'row',
         alignItems: 'center',
@@ -50,6 +51,7 @@ const TimePickerComponent = ({
         }}
         onPress={openCalender}>
         <TextInput
+          pointerEvents="none"
           mode="outlined"
           value={defaultTime.toLocaleString([], {
             hour: '2-digit',
@@ -77,7 +79,7 @@ const TimePickerComponent = ({
       <TouchableOpacity
         style={{padding: 10, marginTop: 10}}
         onPress={openCalender}>
-        <Text style={styles.btnText1}>{t('reset')}</Text>
+        <Text style={styles.btnText1} pointerEvents="none">{t('reset')}</Text>
       </TouchableOpacity>
       <DatePicker
         modal

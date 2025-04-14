@@ -1,8 +1,8 @@
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {TextInput} from 'react-native-paper';
 import React from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import {theme} from '../../Constants/theme';
+import { TextInput } from 'react-native-paper';
+import { theme } from '../../Constants/theme';
 // import * as RNLocalize from 'react-native-localize';
 // import moment from 'moment';
 // import 'moment/locale/hi';
@@ -28,7 +28,7 @@ const DatePickerFullComponent = ({
     onConfirm(date);
   };
   return (
-    <View>
+    <View pointerEvents="none">
       <TouchableOpacity
         style={{
           flexDirection: 'row',
@@ -37,6 +37,7 @@ const DatePickerFullComponent = ({
         }}
         onPress={onPress}>
         <TextInput
+          pointerEvents="none"
           mode="outlined"
           value={value}
           label={label}

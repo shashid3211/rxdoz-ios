@@ -37,6 +37,8 @@
 	<string>We need access to photo library for attaching images to reminders</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We need camera access for capturing images for reminders</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This app needs permission to save photos</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We need microphone access for voice notes in reminders</string>
 	<key>NSUserNotificationsUsageDescription</key>

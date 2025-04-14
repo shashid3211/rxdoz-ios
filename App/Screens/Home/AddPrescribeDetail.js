@@ -1,30 +1,38 @@
+import { useScrollToTop } from '@react-navigation/native';
+import React, { useEffect, useRef, useState } from 'react';
 import {
+  ActivityIndicator,
   Alert,
+  Animated,
+  Dimensions,
+  Image,
   ImageBackground,
+  Modal,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Animated,
-  Modal,
-  Dimensions,
-  Image,
-  ActivityIndicator,
 } from 'react-native';
-import React, {useState, useRef, useEffect} from 'react';
-import {theme} from '../../Constants/theme';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import {BounceInRight, BounceOutRight} from 'react-native-reanimated';
-import {useScrollToTop} from '@react-navigation/native';
-import {useCollapsibleHeader} from 'react-navigation-collapsible';
-import {TextInput} from 'react-native-paper';
 import {
-  launchImageLibrary as _launchImageLibrary,
   launchCamera as _launchCamera,
+  launchImageLibrary as _launchImageLibrary,
 } from 'react-native-image-picker';
+import { TextInput } from 'react-native-paper';
+import { BounceInRight, BounceOutRight } from 'react-native-reanimated';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useCollapsibleHeader } from 'react-navigation-collapsible';
+import { theme } from '../../Constants/theme';
 
+import { useTranslation } from 'react-i18next';
+import RNFS from 'react-native-fs';
+import ButtonComponent from '../../Components/UI/ButtonComponent';
+import DatePickerFullComponent from '../../Components/UI/DatePickerFullComponent';
+import DropdownComponent from '../../Components/UI/DropdownComponent';
+import ErrorModelComponent from '../../Components/UI/ErrorModelComponent';
+import LoadingModalComponent from '../../Components/UI/LoadingModalComponent';
+import ModalComponent from '../../Components/UI/ModalComponent';
 import {
   getDBConnection,
   getDosage,
@@ -32,16 +40,8 @@ import {
   saveDosage,
   saveMedicines,
 } from '../../Database/DbService';
-import DatePickerFullComponent from '../../Components/UI/DatePickerFullComponent';
-import DropdownComponent from '../../Components/UI/DropdownComponent';
-import ButtonComponent from '../../Components/UI/ButtonComponent';
-import {addMedicine, updateMedicine} from '../../Services/DatabaseService';
-import RNFS from 'react-native-fs';
-import ModalComponent from '../../Components/UI/ModalComponent';
-import ErrorModelComponent from '../../Components/UI/ErrorModelComponent';
-import {useTranslation} from 'react-i18next';
-import LoadingModalComponent from '../../Components/UI/LoadingModalComponent';
-import {convert12HourTo24Hour} from '../../utils/helper';
+import { addMedicine, updateMedicine } from '../../Services/DatabaseService';
+import { convert12HourTo24Hour } from '../../utils/helper';
 
 let launchImageLibrary = _launchImageLibrary;
 let launchCamera = _launchCamera;
@@ -747,6 +747,7 @@ const AddPrescribeDetail = ({navigation, route}) => {
           elevation: 8,
         }}>
         <View
+          pointerEvents="none"
           style={{
             width: '100%',
             flexDirection: 'row',
@@ -764,6 +765,7 @@ const AddPrescribeDetail = ({navigation, route}) => {
               marginTop: 10,
             }}>
             <FontAwesome6
+              pointerEvents="none"
               name="arrow-left-long"
               size={22}
               color={theme.COLORS.darkBlue_gradient2}
